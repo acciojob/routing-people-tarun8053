@@ -1,38 +1,50 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import 'regenerator-runtime/runtime'
 
-function UserList() {
-  const [users, setUsers] = useState([]);
-  const [loading,setLoading] = useState(true)
+function UserDetails() {
+  const { id } = useParams();
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    async function fetchUsers() {
+    async function fetchUser() {
       const response = await fetch(
-        "https://jsonplaceholder.typicode.com/users"
+        `https://jsonplaceholder.typicode.com/users/${id}`
       );
       const data = await response.json();
-      setUsers(data);
-      setLoading(false)
+      setUser(data);
     }
 
-    fetchUsers();
-  }, []);
+    
+setTimeout(()=>{
+fetchUser();
+},1000)
+  }, [id]);
 
-  if(loading)return(<h2>Loading...</h2>)
+  if (!user) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
-      <h1>User List</h1>
-      <ul>
-        {users.map((user) => (
-          <li key={user.id}>
-            <Link to={`/users/${user.id}`}>{user.name}</Link>
-          </li>
-        ))}
-      </ul>
+      <h1>User Details</h1>
+      <p>
+        <strong>Name:</strong> {user.name}
+      </p>
+      <p>
+        <strong>Username:</strong> {user.username}
+      </p>
+      <p>
+        <strong>Email:</strong> {user.email}
+      </p>
+      <p>
+        <strong>Phone:</strong> {user.phone}
+      </p>
+      <p>
+        <strong>Website:</strong> {user.website}
+      </p>
     </div>
   );
 }
 
-export default UserList;
+export default UserDetails;
