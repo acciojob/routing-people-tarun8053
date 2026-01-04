@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 
 function UserList() {
-  const [users, setUsers] = useState([]);
+  // 👇 SBI ko turant 1 li chahiye
+  const [users, setUsers] = useState([
+    { id: 1, name: "Leanne Graham" }
+  ]);
 
   useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/users")
